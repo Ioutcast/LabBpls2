@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
 
-    //    @Bean
+//    @Bean
 //    public JavaMailSenderImpl mailSender() {
 //        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 //        javaMailSender.setProtocol("smtp");
@@ -20,16 +20,17 @@ public class EmailService {
 //        javaMailSender.setPassword("");
 //        return javaMailSender;
 //    }
-    @Autowired
-    private JavaMailSender emailSender;
+//    @Autowired
+//    private JavaMailSender emailSender;
+//
+//    public void sendSimpleMessage(String to, String subject, String text, JavaMailSenderImpl mailSender) {
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        String email = "vasilkov.a.s@yandex.ru";
+//        message.setFrom(email);
+//        message.setTo(to);
+//        message.setSubject(subject);
+//        message.setText(text);
+//        mailSender.send(message);
+//    }
 
-    public void sendSimpleMessage(String to, String subject, String text, JavaMailSenderImpl mailSender) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        String email = "vasilkov.a.s@yandex.ru";
-        message.setFrom(email);
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
-        mailSender.send(message);
-    }
 }

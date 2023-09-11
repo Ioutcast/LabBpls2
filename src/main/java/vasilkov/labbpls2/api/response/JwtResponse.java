@@ -1,4 +1,4 @@
-package vasilkov.labbpls2.api;
+package vasilkov.labbpls2.api.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

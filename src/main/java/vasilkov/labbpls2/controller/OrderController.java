@@ -3,10 +3,11 @@ package vasilkov.labbpls2.controller;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import nu.xom.ParsingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vasilkov.labbpls2.api.OrderRequest;
+import vasilkov.labbpls2.api.request.OrderRequest;
 import vasilkov.labbpls2.entity.Order;
 import vasilkov.labbpls2.service.OrderService;
 
@@ -21,12 +22,15 @@ import java.util.Map;
 @ApiResponses(value = {
         @ApiResponse(responseCode = "403", description = "Bad request")
 })
+@Slf4j
 public class OrderController {
 
     private final OrderService orderService;
 
     @PostMapping()
     public ResponseEntity<?> addNewOrder(@Valid @RequestBody OrderRequest orderRequestModel) throws ParsingException, IOException {
+        log.info("addNewOrder");
+
         return ResponseEntity.ok(orderService.save(orderRequestModel));
     }
 
@@ -37,7 +41,7 @@ public class OrderController {
 
     @GetMapping()
     public ResponseEntity<?> getUserOrder(@RequestParam(required = false) Map<String, String> values) {
-
+        log.info("sdf");
         if (values.isEmpty())
             return orderService.findOrdersList();
 

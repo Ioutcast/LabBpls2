@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vasilkov.labbpls2.api.GrantRequest;
+import vasilkov.labbpls2.api.request.GrantRequest;
 import vasilkov.labbpls2.service.OrderService;
 
 import java.io.IOException;
