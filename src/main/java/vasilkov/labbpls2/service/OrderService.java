@@ -4,8 +4,11 @@ package vasilkov.labbpls2.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nu.xom.ParsingException;
+import nu.xom.ValidityException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +34,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.web.client.RestTemplate;
+import static org.springframework.http.HttpMethod.POST;
+
+
 @Slf4j
 @Service @RequiredArgsConstructor
 public class OrderService {
@@ -44,6 +51,7 @@ public class OrderService {
 //    private final JavaMailSenderImpl javaMailSender;
  private final RabbitMQProducerService rabbitMQProducerService;
 
+    private final RestTemplate restTemplate;
 
     @Transactional
     public MessageResponse save(OrderRequest orderRequestModel) throws ParsingException, IOException {
@@ -54,13 +62,12 @@ public class OrderService {
         order.setCountry_of_origin(orderRequestModel.getCountry_of_origin());
         order.setNumber_of_pieces_in_a_package(orderRequestModel.getNumber_of_pieces_in_a_package());
         order.setGuarantee_period(orderRequestModel.getGuarantee_period());
-        log.info("setBrand");
+        log.info("!! check brand");
         order.setBrand(brandRepository.findBrandByName(orderRequestModel.getBrandName())
                 .orElseThrow(() -> new ResourceNotFoundException("Error: Brand Not Found")));
 
         Model model = modelRepository.findModelByName(orderRequestModel.getModelName())
                 .orElseThrow(() -> new ResourceNotFoundException("Error: Model Not Found"));
-
         if (orderRequestModel.getBrandName().equals(model.getBrand().getName())) {
             order.setModel(model);
         } else {
@@ -123,12 +130,17 @@ public class OrderService {
     @Transactional
     public void grantOrderWithEmail(GrantRequest grantRequest) throws ParsingException, IOException {
         System.out.println(grantRequest.getId());
-        Order order = orderRepository.findById(Math.toIntExact(grantRequest.getId()))
-                .orElseThrow(() -> new ResourceNotFoundException("Error: Order Not Found"));
-        order.setStatus(grantRequest.getFinalStatus());
-
-        orderRepository.save(order);
-        rabbitMQProducerService.sendMessage("STATUS",order);
+        final HttpEntity<Object> entity = new HttpEntity<>(grantRequest.getId(), new HttpHeaders());
+        final var response = restTemplate.exchange("http://localhost:4041/api/v2/orders/check", POST, entity, Boolean.class);
+        if (response.getBody() != null && response.getBody()) {
+            Order order = orderRepository.findById(Math.toIntExact(grantRequest.getId()))
+                    .orElseThrow(() -> new ResourceNotFoundException("Error: Order Not Found"));
+            order.setStatus(grantRequest.getFinalStatus());
+            orderRepository.save(order);
+            rabbitMQProducerService.sendMessage("STATUS",order);
+        } else {
+            throw new ValidityException("Order id not found");
+        }
 
     }
 

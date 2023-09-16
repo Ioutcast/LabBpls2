@@ -18,10 +18,9 @@ public class StatusChangedMail implements MailGenerator{
     public String generate(Order order) throws ParsingException, IOException {
         String status = order.getStatus() ? "прошла успешно!" : "не одобрена";
         String mailMessage =
-                "Здравствуйте, " + userService.getByEmail(order.getUserEmail()).get().getFirstName() + "!\n" +
-                        "Ваша заявка прошла модерацию!\n" +
-                        "Заявка на " + order.getDescription() + " " + status + "\n"
-                        + "Спасибо!";
+                "{\"to\": \"" + order.getUserEmail()
+                        + "\",\"subject\": \"КОМУС\", \"text\": \"Ваша заявка прошла модерацию!"
+                        + status+"\"}";
 
 //        return new MailModel(
 //                order.getUserEmail(),

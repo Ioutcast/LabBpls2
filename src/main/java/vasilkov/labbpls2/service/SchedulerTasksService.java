@@ -6,6 +6,7 @@ import nu.xom.ParsingException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import vasilkov.labbpls2.entity.Order;
 import vasilkov.labbpls2.entity.User;
 import vasilkov.labbpls2.exception.ResourceNotFoundException;
@@ -22,14 +23,16 @@ public class SchedulerTasksService {
     private final OrderRepository orderRepository;
     private final RabbitMQProducerService rabbitMQProducerService;
 
-    @Scheduled(fixedDelay = 1,timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedDelay = 1,timeUnit = TimeUnit.MINUTES) @Transactional
     public void checkForNewOrdersWithOutStatus() {
         List<Order> orders = orderRepository.findOrderByStatusIsNull();
         if (!orders.isEmpty()) {
             orders.forEach(
                     it -> {
                         try {
+                            it.setStatus(false);
                             rabbitMQProducerService.sendMessage("NEWORDER", it);
+                            orderRepository.save(it);
                         } catch (ParsingException | IOException e) {
                             throw new RuntimeException(e);
                         }
