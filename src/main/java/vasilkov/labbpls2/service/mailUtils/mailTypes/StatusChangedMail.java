@@ -15,7 +15,7 @@ public class StatusChangedMail implements MailGenerator{
     private final UserService userService;
 
     @Override
-    public MailModel generate(Order order) throws ParsingException, IOException {
+    public String generate(Order order) throws ParsingException, IOException {
         String status = order.getStatus() ? "прошла успешно!" : "не одобрена";
         String mailMessage =
                 "Здравствуйте, " + userService.getByEmail(order.getUserEmail()).get().getFirstName() + "!\n" +
@@ -23,12 +23,13 @@ public class StatusChangedMail implements MailGenerator{
                         "Заявка на " + order.getDescription() + " " + status + "\n"
                         + "Спасибо!";
 
-        return new MailModel(
-                order.getUserEmail(),
-                "КОМУС - Изменился статус объявления",
-                mailMessage
-
-        );
+//        return new MailModel(
+//                order.getUserEmail(),
+//                "КОМУС - Изменился статус объявления",
+//                mailMessage
+//
+//        );
+        return  mailMessage;
     }
 
     @Override
