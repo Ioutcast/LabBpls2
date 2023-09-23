@@ -49,7 +49,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
 //    private final JavaMailSenderImpl javaMailSender;
- private final RabbitMQProducerService rabbitMQProducerService;
+    private final RabbitMQProducerService rabbitMQProducerService;
 
     private final RestTemplate restTemplate;
 
@@ -113,18 +113,10 @@ public class OrderService {
     @Transactional
     public void grantOrderWithEmail(GrantRequest grantRequest) throws ParsingException, IOException {
         System.out.println(grantRequest.getId());
-        final HttpEntity<Object> entity = new HttpEntity<>(grantRequest.getId(), new HttpHeaders());
-        final var response = restTemplate.exchange("http://localhost:4041/api/v2/orders/check", POST, entity, Boolean.class);
-        if (response.getBody() != null && response.getBody()) {
-            Order order = orderRepository.findById(Math.toIntExact(grantRequest.getId()))
-                    .orElseThrow(() -> new ResourceNotFoundException("Error: Order Not Found"));
-            order.setStatus(grantRequest.getFinalStatus());
-            orderRepository.save(order);
-            rabbitMQProducerService.sendMessage("STATUS",order);
-        } else {
-            throw new ValidityException("Order id not found");
-        }
-
+        Order order = orderRepository.findById(Math.toIntExact(grantRequest.getId()))
+                .orElseThrow(() -> new ResourceNotFoundException("Error: Order Not Found"));
+        order.setStatus(grantRequest.getFinalStatus());
+        orderRepository.save(order);
     }
 
 }
