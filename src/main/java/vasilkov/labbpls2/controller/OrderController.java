@@ -23,6 +23,7 @@ import java.util.Map;
         @ApiResponse(responseCode = "403", description = "Bad request")
 })
 @Slf4j
+@Deprecated
 public class OrderController {
 
     private final OrderService orderService;
@@ -44,9 +45,7 @@ public class OrderController {
         log.info("sdf");
         if (values.isEmpty())
             return orderService.findOrdersList();
-
         List<Order> orders = orderService.findAllOrdersBySpecification(values);
-
         return ResponseEntity.ok(orders);
 
     }

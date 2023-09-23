@@ -3,26 +3,16 @@ spring:
         url: jdbc:postgresql://localhost:5444/postgres
         username: postgres
         password: postgres
-        #url=jdbc:postgresql://pg:5432/studs
-        #username=s284699
-        #password=6hCX6nqHl02zEJAZ
         driverClassName: org.postgresql.Driver
     jpa:
           database-platform: org.hibernate.dialect.PostgreSQLDialect
           generate-ddl: true
-          hibernate.ddl-auto: update
+          hibernate.ddl-auto: validate
           open-in-view: false
 server:
           port: 4040
           shutdown: graceful
-#    mail:
-#      host=smtp.yandex.ru
-#    .mail.port=587
-#    .mail.username=vasilkov.a.s@yandex.ru
-#    .mail.password=ArigatoDerftion011
-#    .mail.properties.mail.smtp.auth=true
-#    .mail.properties.mail.smtp.starttls.enable=true
-#    .mail.properties.mail.smtp.starttls.required=true
+
 rabbit-mq:
     host: localhost
     port: 5672
@@ -32,3 +22,9 @@ rabbit-mq:
     queue: queue1
     exchange: testExchange
     routing-key: testRoutingKey
+
+camunda:
+  bpm:
+    admin-user:
+      id: admin
+      password: admin

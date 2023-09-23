@@ -13,16 +13,15 @@ import vasilkov.labbpls2.api.response.JwtResponse;
 import vasilkov.labbpls2.api.response.MessageResponse;
 import vasilkov.labbpls2.exception.AuthException;
 import vasilkov.labbpls2.service.AuthService;
-import vasilkov.labbpls2.service.EmailService;
 
+
+@Deprecated
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
-
-    private final EmailService emailService;
 
     @PostMapping("/singin")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest authRequest) throws Exception {

@@ -23,7 +23,7 @@ import java.util.Map;
 public class AuthService {
 
     private final UserService userService;
-    //todo table
+
     private final Map<String, String> refreshStorage = new HashMap<>();
 
     private final JwtProvider jwtProvider;

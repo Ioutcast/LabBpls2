@@ -13,7 +13,7 @@ import vasilkov.labbpls2.api.request.GrantRequest;
 import vasilkov.labbpls2.service.OrderService;
 
 import java.io.IOException;
-
+@Deprecated
 @RestController
 @RequestMapping("/api/v1/admin")
 public class AdministratorController {

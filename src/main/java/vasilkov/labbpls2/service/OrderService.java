@@ -74,25 +74,8 @@ public class OrderService {
             throw new ResourceNotFoundException("Error: This brand doesn't have this model");
         }
         log.info("save");
-        User user = userService.getByEmail(String.valueOf((SecurityContextHolder.getContext().getAuthentication().getPrincipal())))
-                .orElseThrow(() -> new ResourceNotFoundException("Error: User Not Found"));
-
-        order.setUserEmail(user.getEmail());
+        order.setUserEmail("vasilkov.a.c@yandex.ru");
         orderRepository.save(order);
-
-//        List<Order> orders = orderRepository.findAllByUserEmail(user.getEmail()).orElseThrow(() -> new ResourceNotFoundException("Error: Order Not Found"));
-//        int i = orders.indexOf(order);
-//
-//        Optional<List<String>> adminEmail = XMLService.getAllAdminsEmail();
-      //todo
-//        for (String email : adminEmail.get()) {
-//            emailService.sendSimpleMessage(email,
-//                    "КОМУС - Новое объявление",
-//                    "Здравствуйте!\n" +
-//                            "Вам пришло новое объявление на модерацию!\n" +
-//                            "Id этого объявления: " + orders.get(i).getId() + "\n" +
-//                            "Спасибо!", javaMailSender);
-//        }
         return (new MessageResponse("order registered successfully!"));
 
     }
