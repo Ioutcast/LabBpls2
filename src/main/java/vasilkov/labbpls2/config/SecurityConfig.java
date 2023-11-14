@@ -33,18 +33,6 @@ public class SecurityConfig {
                 .and()
                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-//                .authorizeHttpRequests(
-//                        authz -> authz
-//                                .requestMatchers("/api/v1/auth/**").permitAll()
-//                                .requestMatchers("/api/v1/admin/**").permitAll()
-//                                .anyRequest().authenticated()
-//                                .and()
-//                                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-//
-//                                .logout()
-//                                .logoutUrl("/api/v1/auth/logout")
-//                                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-//                )
         return http.build();
     }
 

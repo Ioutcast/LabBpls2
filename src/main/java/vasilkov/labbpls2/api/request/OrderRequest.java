@@ -1,36 +1,41 @@
 package vasilkov.labbpls2.api.request;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class OrderRequest implements Serializable {
 
     @NotBlank(message = "description не должен быть пустым!")
-    private final String description;
+    private String description;
 
     @NotNull(message = "color не должен быть пустым!")
-    private final String color;
+    private String color;
 
     @NotNull(message = "material не должен быть пустым!")
-    private final String material;
+    private String material;
 
     @NotNull(message = "number_of_pieces_in_a_package не должен быть пустым!")
-    private final Integer number_of_pieces_in_a_package;
+    private Integer number_of_pieces_in_a_package;
 
     @NotNull(message = "country_of_origin не должен быть пустым!")
-    private final String country_of_origin;
+    private String country_of_origin;
 
     @NotBlank(message = "Brand не должен быть пустым!")
-    private final String brandName;
+    private String brandName;
 
     @NotBlank(message = "Model не должен быть пустым!")
-    private final String modelName;
+    private String modelName;
 
-    private final Integer guarantee_period;
+    private Integer guarantee_period;
+
 
 }

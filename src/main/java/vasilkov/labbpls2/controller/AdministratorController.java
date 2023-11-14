@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vasilkov.labbpls2.api.request.GrantRequest;
-import vasilkov.labbpls2.service.OrderService;
+import vasilkov.labbpls2.service.impl.OrderServiceImpl;
 
 import java.io.IOException;
 
@@ -19,12 +19,12 @@ import java.io.IOException;
 public class AdministratorController {
 
     @Autowired
-    OrderService orderService;
+    OrderServiceImpl orderServiceImpl;
 
     @PostMapping(value = "/grant")
     public ResponseEntity<?> getAdvertisementById(@Valid @RequestBody GrantRequest grantRequestDto) throws ParsingException, IOException {
 
-        orderService.grantOrderWithEmail(grantRequestDto);
+        orderServiceImpl.grantOrderWithEmail(grantRequestDto);
 
         return ResponseEntity.ok("Order status changed successfully!");
     }

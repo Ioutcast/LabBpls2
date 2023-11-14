@@ -1,4 +1,4 @@
-package vasilkov.labbpls2.service;
+package vasilkov.labbpls2.service.impl;
 
 import nu.xom.*;
 import vasilkov.labbpls2.entity.Role;
@@ -10,7 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
-public class XMLService {
+public class XMLServiceImpl {
     public static Optional<User> getByEmailFromXml(String emailQuery) throws ParsingException, IOException {
 
         File file = new File("./src/main/resources/User.xml");

@@ -5,8 +5,7 @@ import nu.xom.ParsingException;
 import org.springframework.stereotype.Component;
 import vasilkov.labbpls2.entity.Order;
 import vasilkov.labbpls2.exception.ResourceIsNotValidException;
-import vasilkov.labbpls2.repository.OrderRepository;
-import vasilkov.labbpls2.service.XMLService;
+import vasilkov.labbpls2.service.impl.XMLServiceImpl;
 import vasilkov.labbpls2.service.mailUtils.MailModel;
 
 import java.io.IOException;
@@ -19,7 +18,7 @@ public class NewOrderReceivedMail implements MailGenerator{
     @Override
     public MailModel generate(Order order) throws ParsingException, IOException {
         //todo
-        Optional<List<String>> adminEmail = XMLService.getAllAdminsEmail();
+        Optional<List<String>> adminEmail = XMLServiceImpl.getAllAdminsEmail();
         if (adminEmail.isEmpty())
             throw new ResourceIsNotValidException("Админов не сущетствует!)");
         String mailMessage = "Здравствуйте!\n" +  "Вам пришло новое объявление на модерацию!\n"

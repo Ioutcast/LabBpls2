@@ -1,4 +1,4 @@
-package vasilkov.labbpls2.service;
+package vasilkov.labbpls2.service.impl;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +11,9 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceImpl {
     public Optional<User> getByEmail(@NonNull String login) throws ParsingException, IOException {
-        return XMLService.getByEmailFromXml(login);
+        return XMLServiceImpl.getByEmailFromXml(login);
     }
 
 }
