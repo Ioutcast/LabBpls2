@@ -39,8 +39,6 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
 
     private final UserServiceImpl userServiceImpl;
-    private final BrandRepository brandRepository;
-    private final ModelRepository modelRepository;
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final RabbitMQProducerServiceImpl rabbitMQProducerServiceImpl;

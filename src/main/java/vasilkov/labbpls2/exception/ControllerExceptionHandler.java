@@ -10,62 +10,39 @@ import java.util.Date;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
-    @ExceptionHandler(value = {AuthException.class})
-    public ResponseEntity<ErrorMessage> resourceNotFoundException(AuthException ex, WebRequest request) {
-        ErrorMessage message = new ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
-                new Date(),
-                ex.getMessage(),
-                request.getDescription(false)
-        );
-        return new ResponseEntity<ErrorMessage>(message, HttpStatus.FORBIDDEN);
+
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<ErrorMessage> handleAuthException(AuthException ex, WebRequest request) {
+        return buildErrorResponse(HttpStatus.FORBIDDEN, ex.getMessage(), request);
     }
 
-    @ExceptionHandler(value = {ResourceNotFoundException.class})
-    public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-
-        ErrorMessage message = new ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
-                new Date(),
-                "ExpiredJwtException",
-                request.getDescription(false)
-        );
-        return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorMessage> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+        return buildErrorResponse(HttpStatus.NOT_FOUND, "ExpiredJwtException", request);
     }
 
-    @ExceptionHandler(value = {ResourceIsNotValidException.class})
-    public ResponseEntity<ErrorMessage> resourceIsNotValidException(ResourceIsNotValidException ex, WebRequest request) {
-
-        ErrorMessage message = new ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
-                new Date(),
-                "resourceIsNotValidException",
-                request.getDescription(false)
-        );
-        return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(ResourceIsNotValidException.class)
+    public ResponseEntity<ErrorMessage> handleResourceIsNotValidException(ResourceIsNotValidException ex, WebRequest request) {
+        return buildErrorResponse(HttpStatus.NOT_FOUND, "resourceIsNotValidException", request);
     }
 
-    @ExceptionHandler(value = {MyPSQLException.class})
-    public ResponseEntity<ErrorMessage> myPSQLException(MyPSQLException ex, WebRequest request) {
-
-        ErrorMessage message = new ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
-                new Date(),
-                "PSQLException",
-                request.getDescription(false)
-        );
-        return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(MyPSQLException.class)
+    public ResponseEntity<ErrorMessage> handleMyPSQLException(MyPSQLException ex, WebRequest request) {
+        return buildErrorResponse(HttpStatus.NOT_FOUND, "PSQLException", request);
     }
 
-    @ExceptionHandler(value = {MyConstraintViolationException.class})
-    public ResponseEntity<ErrorMessage> myConstraintViolationException(MyConstraintViolationException ex, WebRequest request) {
+    @ExceptionHandler(MyConstraintViolationException.class)
+    public ResponseEntity<ErrorMessage> handleMyConstraintViolationException(MyConstraintViolationException ex, WebRequest request) {
+        return buildErrorResponse(HttpStatus.NOT_FOUND, "MyConstraintViolationException", request);
+    }
 
-        ErrorMessage message = new ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
+    private ResponseEntity<ErrorMessage> buildErrorResponse(HttpStatus status, String message, WebRequest request) {
+        ErrorMessage errorMessage = new ErrorMessage(
+                status.value(),
                 new Date(),
-                "MyConstraintViolationException",
+                message,
                 request.getDescription(false)
         );
-        return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorMessage, status);
     }
 }
